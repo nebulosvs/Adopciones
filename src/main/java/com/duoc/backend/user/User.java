@@ -1,4 +1,4 @@
-package com.duoc.backend;
+package com.duoc.backend.user;
 
 import java.util.Collection;
 
