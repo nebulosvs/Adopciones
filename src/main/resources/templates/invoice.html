@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Facturas</title>
+</head>
+
+<body>
+
+<h2>Crear factura</h2>
+
+<input id="patient" placeholder="Paciente">
+
+<h3>Servicios</h3>
+<div id="cares"></div>
+
+<h3>Medicamentos</h3>
+<div id="medications"></div>
+
+<h3>Total: $<span id="total">0</span></h3>
+
+<button onclick="crear()">Crear factura</button>
+
+<hr>
+
+<h2>Facturas</h2>
+
+<div id="lista"></div>
+
+<script>
+
+const token = localStorage.getItem("token")
+
+let selectedCares=[]
+let selectedMedications=[]
+
+function cargarCares(){
+
+fetch("/care",{
+headers:{ "Authorization":token }
+})
+.then(res=>res.json())
+.then(data=>{
+
+let html=""
+
+data.forEach(c=>{
+html+=`
+<div>
+<input type="checkbox" onchange="toggleCare(${c.id},${c.cost})">
+${c.name} - $${c.cost}
+</div>
+`
+})
+
+document.getElementById("cares").innerHTML=html
+
+})
+
+}
+
+function cargarMedications(){
+
+fetch("/medication",{
+headers:{ "Authorization":token }
+})
+.then(res=>res.json())
+.then(data=>{
+
+let html=""
+
+data.forEach(m=>{
+html+=`
+<div>
+<input type="checkbox" onchange="toggleMedication(${m.id},${m.cost})">
+${m.name} - $${m.cost}
+</div>
+`
+})
+
+document.getElementById("medications").innerHTML=html
+
+})
+
+}
+
+function toggleCare(id,cost){
+
+const index = selectedCares.findIndex(c=>c.id===id)
+
+if(index>-1)
+selectedCares.splice(index,1)
+else
+selectedCares.push({id:id})
+
+calcular()
+
+}
+
+function toggleMedication(id,cost){
+
+const index = selectedMedications.findIndex(m=>m.id===id)
+
+if(index>-1)
+selectedMedications.splice(index,1)
+else
+selectedMedications.push({id:id})
+
+calcular()
+
+}
+
+function calcular(){
+
+let total=0
+
+document.querySelectorAll("#cares input:checked")
+.forEach(c=>{
+const text=c.parentElement.innerText
+total+=parseFloat(text.split("$")[1])
+})
+
+document.querySelectorAll("#medications input:checked")
+.forEach(m=>{
+const text=m.parentElement.innerText
+total+=parseFloat(text.split("$")[1])
+})
+
+document.getElementById("total").innerText=total
+
+}
+
+function crear(){
+
+fetch("/invoice",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Authorization":token
+},
+body:JSON.stringify({
+patientName:document.getElementById("patient").value,
+date:new Date().toISOString().split('T')[0],
+cares:selectedCares,
+medications:selectedMedications
+})
+})
+.then(()=>cargarFacturas())
+
+}
+
+function cargarFacturas(){
+
+fetch("/invoice",{
+headers:{ "Authorization":token }
+})
+.then(res=>res.json())
+.then(data=>{
+
+let html=""
+
+data.forEach(f=>{
+html+=`
+<div style="border:1px solid gray;padding:10px;margin:10px">
+Factura ${f.id} - ${f.patientName} - $${f.totalCost}
+<br>
+<button onclick="pdf(${f.id})">Imprimir PDF</button>
+</div>
+`
+})
+
+document.getElementById("lista").innerHTML=html
+
+})
+
+}
+
+function pdf(id){
+
+fetch("/invoice/pdf/"+id,{
+headers:{ "Authorization":token }
+})
+.then(res=>res.blob())
+.then(blob=>{
+
+const url=window.URL.createObjectURL(blob)
+const a=document.createElement("a")
+
+a.href=url
+a.download="factura_"+id+".pdf"
+a.click()
+
+})
+
+}
+
+cargarCares()
+cargarMedications()
+cargarFacturas()
+
+</script>
+
+</body>
+</html>

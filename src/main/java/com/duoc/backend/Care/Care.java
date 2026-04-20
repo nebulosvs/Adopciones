@@ -11,7 +11,7 @@ public class Care {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private Double cost;
+    private int cost;
 
     // Getters and Setters
     public Long getId() {
@@ -30,11 +30,11 @@ public class Care {
         this.name = name;
     }
 
-    public Double getCost() {
+    public int getCost() {
         return cost;
     }
 
-    public void setCost(Double cost) {
+    public void setCost(int cost) {
         this.cost = cost;
     }
 }

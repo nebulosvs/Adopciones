@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Dashboard</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<h1>Panel Veterinaria</h1>
+
+<button onclick="goInvoice()">Facturas</button>
+
+<script>
+function goInvoice(){
+    window.location.href="/invoice-view"
+}
+</script>
+
+</body>
+</html>

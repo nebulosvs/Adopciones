@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.2.xsd">
+
+    <suppress>
+        <notes>False positive Spring Security</notes>
+        <packageUrl regex="true">pkg:maven/org.springframework.security/.*</packageUrl>
+    </suppress>
+
+    <suppress>
+        <notes>False positive Tomcat embed</notes>
+        <packageUrl regex="true">pkg:maven/org.apache.tomcat.embed/.*</packageUrl>
+    </suppress>
+
+</suppressions>
