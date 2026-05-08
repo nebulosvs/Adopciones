@@ -18,11 +18,25 @@ public class WebSecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
+            .headers(headers -> headers
+                .contentSecurityPolicy(csp -> csp
+                    .policyDirectives(
+                        "default-src 'self'; " +
+                        "script-src 'self'; " +
+                        "style-src 'self' 'unsafe-inline'; " +
+                        "img-src 'self' data:; " +
+                        "font-src 'self'; " +
+                        "object-src 'none'; " +
+                        "base-uri 'self'; " +
+                        "frame-ancestors 'none';"
+                    )
+                )
+            )
 
             .authorizeHttpRequests(auth -> auth
 
                 // frontend
-                .requestMatchers("/", "/dashboard", "/invoice-view").permitAll()
+                .requestMatchers("/", "/dashboard", "/pets", "/pets/**").permitAll()
 
                 // static
                 .requestMatchers("/css/**", "/js/**").permitAll()
@@ -31,8 +45,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/login").permitAll()
 
                 // APIs protegidas
-                .requestMatchers("/invoice/**").authenticated()
-                .requestMatchers("/patient/**").authenticated()
+                .requestMatchers("/adoption").authenticated()
+                .requestMatchers("/adoption/**").authenticated()
 
                 .anyRequest().authenticated()
             )

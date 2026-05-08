@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mascotas</title>
+</head>
+<body>
+
+<h2>Mascotas Disponibles</h2>
+
+<ul id="petList"></ul>
+
+<script>
+async function loadPets() {
+    const response = await fetch("/pets");
+    const pets = await response.json();
+
+    const list = document.getElementById("petList");
+    list.innerHTML = "";
+
+    pets.forEach(p => {
+        const li = document.createElement("li");
+        li.innerText = p.name + " (" + p.type + ")";
+        list.appendChild(li);
+    });
+}
+
+loadPets();
+</script>
+
+</body>
+</html>

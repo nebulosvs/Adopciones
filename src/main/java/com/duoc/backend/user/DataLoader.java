@@ -5,10 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.duoc.backend.care.Care;
-import com.duoc.backend.care.CareRepository;
-import com.duoc.backend.medication.Medication;
-import com.duoc.backend.medication.MedicationRepository;
+import com.duoc.backend.pet.Pet;
+import com.duoc.backend.pet.PetRepository;
 
 @Configuration
 public class DataLoader {
@@ -17,80 +15,46 @@ public class DataLoader {
     private UserRepository userRepository;
 
     @Autowired
-    private CareRepository careRepository;
-
-    @Autowired
-    private MedicationRepository medicationRepository;
+    private PetRepository petRepository;
 
     @Bean
+    public
     CommandLineRunner initDatabase() {
         return args -> {
 
             // USERS
-            if(userRepository.count() == 0){
+            if (userRepository.count() == 0) {
 
-                User u1 = new User();
-                u1.setUsername("admin");
-                u1.setPassword("1234");
-                u1.setEmail("admin@duoc.cl");
+                User admin = new User();
+                admin.setUsername("admin");
+                admin.setPassword("1234");
+                admin.setEmail("admin@duoc.cl");
 
-                User u2 = new User();
-                u2.setUsername("vet");
-                u2.setPassword("1234");
-                u2.setEmail("vet@duoc.cl");
-
-                User u3 = new User();
-                u3.setUsername("user");
-                u3.setPassword("1234");
-                u3.setEmail("user@duoc.cl");
-
-                userRepository.save(u1);
-                userRepository.save(u2);
-                userRepository.save(u3);
+                userRepository.save(admin);
             }
 
-            // CARES
-            if(careRepository.count() == 0){
+            // PETS
+            if (petRepository.count() == 0) {
 
-                Care c1 = new Care();
-                c1.setName("Consulta General");
-                c1.setCost(15000);
+                Pet p1 = new Pet();
+                p1.setName("Firulais");
+                p1.setType("Perro");
+                p1.setAge(3);
+                p1.setDescription("Muy amigable");
+                p1.setAvailable(true);
 
-                Care c2 = new Care();
-                c2.setName("Vacunacion");
-                c2.setCost(20000);
+                Pet p2 = new Pet();
+                p2.setName("Mishi");
+                p2.setType("Gato");
+                p2.setAge(2);
+                p2.setDescription("Tranquilo");
+                p2.setAvailable(true);
 
-                Care c3 = new Care();
-                c3.setName("Cirugia Menor");
-                c3.setCost(80000);
-
-                careRepository.save(c1);
-                careRepository.save(c2);
-                careRepository.save(c3);
-            }
-
-            // MEDICATIONS
-            if(medicationRepository.count() == 0){
-
-                Medication m1 = new Medication();
-                m1.setName("Antibiotico");
-                m1.setCost(12000.0);
-
-                Medication m2 = new Medication();
-                m2.setName("Antiinflamatorio");
-                m2.setCost(9000.0);
-
-                Medication m3 = new Medication();
-                m3.setName("Vitaminas");
-                m3.setCost(5000.0);
-
-                medicationRepository.save(m1);
-                medicationRepository.save(m2);
-                medicationRepository.save(m3);
+                petRepository.save(p1);
+                petRepository.save(p2);
             }
 
             System.out.println("Datos iniciales cargados.");
-
         };
     }
 }

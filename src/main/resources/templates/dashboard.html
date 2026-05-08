@@ -1,21 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-<title>Dashboard</title>
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Dashboard</title>
 </head>
-
 <body>
 
-<h1>Panel Veterinaria</h1>
+<h1>Dashboard</h1>
 
-<button onclick="goInvoice()">Facturas</button>
-
-<script>
-function goInvoice(){
-    window.location.href="/invoice-view"
-}
-</script>
+<a href="/pets-view">Ver Mascotas</a><br>
+<a href="/adoption-view">Solicitar Adopción</a>
 
 </body>
 </html>

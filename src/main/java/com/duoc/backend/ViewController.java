@@ -16,8 +16,13 @@ public class ViewController {
         return "dashboard";
     }
 
-    @GetMapping("/invoice-view")
-    public String invoice() {
-        return "invoice";
+    @GetMapping("/pets-view")
+    public String pets() {
+        return "pets";
+    }
+
+    @GetMapping("/adoption-view")
+    public String adoption() {
+        return "adoption";
     }
 }

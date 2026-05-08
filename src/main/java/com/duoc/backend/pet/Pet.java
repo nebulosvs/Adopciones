@@ -1,4 +1,4 @@
-package com.duoc.backend.patient;
+package com.duoc.backend.pet;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,15 +6,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Patient {
+public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
-    private String species;
-    private String breed;
+    private String type;
     private int age;
-    private String owner;
+    private String description;
+    private boolean available;
 
     // Getters and Setters
     public Long getId() {
@@ -33,20 +34,28 @@ public class Patient {
         this.name = name;
     }
 
-    public String getSpecies() {
-        return species;
+    public String getType() {
+        return type;
     }
 
-    public void setSpecies(String species) {
-        this.species = species;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getBreed() {
-        return breed;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBreed(String breed) {
-        this.breed = breed;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public int getAge() {
@@ -57,11 +66,4 @@ public class Patient {
         this.age = age;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
 }
