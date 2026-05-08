@@ -12,7 +12,7 @@
     <input type="text" id="username" placeholder="Usuario">
     <input type="password" id="password" placeholder="Password">
 
-    <button onclick="login()">Login</button>
+    <button type="button" onclick="login()">Login</button>
 </div>
 
 <script>
@@ -28,10 +28,26 @@ function login() {
             password: document.getElementById("password").value
         })
     })
-    .then(res => res.text())
+    .then(async res => {
+
+        if (!res.ok) {
+            const error = await res.text();
+            alert("Login incorrecto: " + error);
+            return;
+        }
+
+        return res.text();
+    })
     .then(token => {
-        localStorage.setItem("token", token);
-        window.location.href = "/dashboard";
+
+        if(token){
+            localStorage.setItem("token", token);
+            window.location.href = "/dashboard";
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Error al iniciar sesión");
     });
 }
 </script>
