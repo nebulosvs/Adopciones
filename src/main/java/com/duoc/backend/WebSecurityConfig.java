@@ -18,11 +18,13 @@ public class WebSecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .httpBasic(httpBasic -> httpBasic.disable())
             .headers(headers -> headers
                 .contentSecurityPolicy(csp -> csp
                     .policyDirectives(
                         "default-src 'self'; " +
-                        "script-src 'self'; " +
+                        "script-src 'self' 'unsafe-inline'; " +
                         "style-src 'self' 'unsafe-inline'; " +
                         "img-src 'self' data:; " +
                         "font-src 'self'; " +
@@ -36,16 +38,15 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(auth -> auth
 
                 // frontend
-                .requestMatchers("/", "/dashboard", "/pets", "/pets/**").permitAll()
+                .requestMatchers("/", "/dashboard","adoption-view", "/pets-view", "/pets", "/pets/**").permitAll()
 
                 // static
                 .requestMatchers("/css/**", "/js/**").permitAll()
 
                 // login
-                .requestMatchers("/login").permitAll()
+                .requestMatchers("/login","/api/login", "/h2-console/**").permitAll()
 
                 // APIs protegidas
-                .requestMatchers("/adoption").authenticated()
                 .requestMatchers("/adoption/**").authenticated()
 
                 .anyRequest().authenticated()

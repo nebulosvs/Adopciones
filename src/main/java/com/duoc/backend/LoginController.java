@@ -1,7 +1,8 @@
 package com.duoc.backend;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,25 +14,37 @@ import com.duoc.backend.user.User;
 public class LoginController {
 
     @Autowired
-    JWTAuthenticationConfig jwtAuthtenticationConfig;
+    private JWTAuthenticationConfig jwtAuthenticationConfig;
 
     @Autowired
     private MyUserDetailsService userDetailsService;
 
-    @PostMapping("/login")
-    public String login(@RequestBody User loginRequest) {
+    @PostMapping("/api/login")
+    public ResponseEntity<?> login(@RequestBody User loginRequest) {
 
-        final UserDetails userDetails =
-                userDetailsService.loadUserByUsername(
-                        loginRequest.getUsername()
-                );
+        try {
 
-        if (!userDetails.getPassword()
-                .equals(loginRequest.getPassword())) {
-            throw new RuntimeException("Invalid login");
+            User user = (User) userDetailsService
+                    .loadUserByUsername(loginRequest.getUsername());
+
+            // VALIDAR PASSWORD
+            if (!user.getPassword().equals(loginRequest.getPassword())) {
+
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Invalid password");
+            }
+
+            String token =
+                    jwtAuthenticationConfig.getJWTToken(user.getUsername());
+
+            return ResponseEntity.ok(token);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid login");
         }
-
-        return jwtAuthtenticationConfig
-                .getJWTToken(loginRequest.getUsername());
     }
 }

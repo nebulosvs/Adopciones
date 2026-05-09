@@ -50,8 +50,33 @@ public class DataLoader {
                 p2.setDescription("Tranquilo");
                 p2.setAvailable(true);
 
+                Pet p3 = new Pet();
+                p3.setName("Luna");
+                p3.setType("Perro");
+                p3.setAge(1);
+                p3.setDescription("Juguetona y cariñosa");
+                p3.setAvailable(true);
+
+                Pet p4 = new Pet();
+                p4.setName("Tom");
+                p4.setType("Gato");
+                p4.setAge(4);
+                p4.setDescription("Le gusta dormir");
+                p4.setAvailable(true);
+
+                Pet p5 = new Pet();
+                p5.setName("Rocky");
+                p5.setType("Perro");
+                p5.setAge(5);
+                p5.setDescription("Protector y tranquilo");
+                p5.setAvailable(false);
+
+
                 petRepository.save(p1);
                 petRepository.save(p2);
+                petRepository.save(p3);
+                petRepository.save(p4);
+                petRepository.save(p5);
             }
 
             System.out.println("Datos iniciales cargados.");

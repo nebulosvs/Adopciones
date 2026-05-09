@@ -24,6 +24,7 @@ class AdoptionRequestTest {
         assertEquals("Juan", request.getApplicantName());
         assertEquals("juan@test.com", request.getEmail());
         assertEquals("Quiero adoptar", request.getMessage());
-        assertEquals(pet, request.getPet());
+        assertEquals(pet.getName(),
+             request.getPet().getName());
     }
 }

@@ -43,8 +43,8 @@ class DataLoaderTest {
         // USERS → 1
         verify(userRepository, times(1)).save(any());
 
-        // PETS → 2
-        verify(petRepository, times(2)).save(any());
+        // PETS → 5
+        verify(petRepository, times(5)).save(any());
     }
 
     // CUANDO YA EXISTEN DATOS

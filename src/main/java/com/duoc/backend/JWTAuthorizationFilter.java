@@ -70,8 +70,10 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        String path = request.getServletPath();
+
         // permitir login sin token
-        if (request.getServletPath().equals("/login")) {
+        if (path.equals("/login") || path.equals("/api/login")) {
             filterChain.doFilter(request, response);
             return;
         }

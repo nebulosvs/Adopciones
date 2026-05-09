@@ -10,21 +10,43 @@
 <ul id="petList"></ul>
 
 <script>
+
 async function loadPets() {
-    const response = await fetch("/pets");
-    const pets = await response.json();
 
-    const list = document.getElementById("petList");
-    list.innerHTML = "";
+    try {
 
-    pets.forEach(p => {
-        const li = document.createElement("li");
-        li.innerText = p.name + " (" + p.type + ")";
-        list.appendChild(li);
-    });
+        const response = await fetch("/pets");
+
+        if (!response.ok) {
+            throw new Error("Error cargando mascotas");
+        }
+
+        const pets = await response.json();
+
+        const list = document.getElementById("petList");
+
+        list.innerHTML = "";
+
+        pets.forEach(p => {
+
+            const li = document.createElement("li");
+
+            li.innerText =
+                p.name + " (" + p.type + ")";
+
+            list.appendChild(li);
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("No se pudieron cargar las mascotas");
+    }
 }
 
 loadPets();
+
 </script>
 
 </body>

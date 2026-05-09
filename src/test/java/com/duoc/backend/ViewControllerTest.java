@@ -32,14 +32,14 @@ class ViewControllerTest {
 
     @Test
     void shouldReturnPetsView() throws Exception {
-        mockMvc.perform(get("/pets"))
+        mockMvc.perform(get("/pets-view"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("pets"));
 }
 
     @Test
     void shouldReturnAdoptionView() throws Exception {
-        mockMvc.perform(get("/adoption"))
+        mockMvc.perform(get("/adoption-view"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("adoption"));
 }

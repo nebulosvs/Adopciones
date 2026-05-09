@@ -1,56 +1,113 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Login Veterinaria</title>
+
+    <meta charset="UTF-8">
+
+    <title>Login - Unidos por los Animales</title>
+
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
+
 <body>
 
-<div class="login-box">
-    <h2>Inicio de Sesión para Unidos por los Animales</h2>
+    <div class="container">
 
-    <input type="text" id="username" placeholder="Usuario">
-    <input type="password" id="password" placeholder="Password">
+        <h1>Centro de Adopciones</h1>
 
-    <button type="button" onclick="login()">Login</button>
-</div>
+        <h2>Iniciar Sesión</h2>
 
-<script>
-function login() {
+        <label for="username">
+            Usuario:
+        </label>
 
-    fetch('http://localhost:8180/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: document.getElementById("username").value,
-            password: document.getElementById("password").value
-        })
-    })
-    .then(async res => {
+        <input
+            type="text"
+            id="username"
+            placeholder="Ingrese usuario"
+            required
+        >
 
-        if (!res.ok) {
-            const error = await res.text();
-            alert("Login incorrecto: " + error);
-            return;
+        <label for="password">
+            Contraseña:
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Ingrese contraseña"
+            required
+        >
+
+        <button
+            type="button"
+            onclick="login()"
+        >
+            Ingresar
+        </button>
+
+        <p id="error" style="color:red;"></p>
+
+    </div>
+
+    <script>
+
+        async function login() {
+
+            const username =
+                document.getElementById("username").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            const errorMsg =
+                document.getElementById("error");
+
+            errorMsg.textContent = "";
+
+            try {
+
+                const response = await fetch("/api/login", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                if (!response.ok) {
+
+                    errorMsg.textContent =
+                        "Usuario o contraseña incorrectos";
+
+                    return;
+                }
+
+                const token = await response.text();
+
+                localStorage.setItem("token", token);
+
+                window.location.href = "/dashboard";
+
+            } catch (error) {
+
+                console.error(error);
+
+                errorMsg.textContent =
+                    "Error al conectar con el servidor";
+            }
         }
 
-        return res.text();
-    })
-    .then(token => {
-
-        if(token){
-            localStorage.setItem("token", token);
-            window.location.href = "/dashboard";
-        }
-    })
-    .catch(error => {
-        console.error(error);
-        alert("Error al iniciar sesión");
-    });
-}
-</script>
+    </script>
 
 </body>
+
 </html>
